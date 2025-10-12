@@ -66,3 +66,58 @@ pip install -r requirements.txt
 ```bash
 
 python app.py
+
+
+```
+
+## 📄 Step 4: Add a License (MIT License)
+
+Create a file named **LICENSE** and paste:
+
+```text
+MIT License
+
+Copyright (c) 2025 MentiLink
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+```
+🧹 Step 5: Add a .gitignore File
+```bash
+Create a file named .gitignore and paste:
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+instance/
+.env
+venv/
+.env/
+*.db
+*.sqlite3
+.DS_Store
+
+```
+✅ Step 6: Final Commit
+```
+After adding all files:
+
+git add .
+git commit -m "Added README, LICENSE, and .gitignore"
+git push
+
+```
+🎉 Step 7: Done!
+```
+Your GitHub repository is now ready and professional-looking!
+You can share your project link as:
+
+👉 https://github.com/Prateek6396/MentiLink
