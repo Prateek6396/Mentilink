@@ -57,20 +57,19 @@ To empower students and early-career professionals with **the right guidance, me
 git clone https://github.com/YOUR_USERNAME/MentiLink.git
 cd MentiLink
 ```
-###🪜 Step 2: Install Dependencies
+🪜 Step 2: Install Dependencies
 ```bash
 
 pip install -r requirements.txt
 ```
-###🪜 Step 3: Run the Application
+🪜 Step 3: Run the Application
 ```bash
 
 python app.py
 
 
 ```
-
-## 📄 Step 4: Add a License (MIT License)
+📄 Step 4: Add a License (MIT License)
 
 Create a file named **LICENSE** and paste:
 
