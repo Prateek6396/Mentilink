@@ -55,5 +55,10 @@ To empower students and early-career professionals with **the right guidance, me
 ```bash
 git clone https://github.com/YOUR_USERNAME/MentiLink.git
 cd MentiLink
+
+**###🪜 Step 2: Install Dependencies**
 pip install -r requirements.txt
+
+**🪜 Step 3: Run the Application**
 python app.py
+
