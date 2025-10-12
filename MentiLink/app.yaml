@@ -1,0 +1,5 @@
+# app.yaml
+runtime: python39 # Specifies the Python version
+
+# Tells App Engine how to start your app using the Gunicorn web server
+entrypoint: gunicorn -b :$PORT 'app:app'
