@@ -1,0 +1,230 @@
+# Technical Specification Document for Mentilink – Smart Mentoring Platform for Career & Skill Development
+
+---
+
+## 1. Overview
+
+Mentilink is a web-based mentoring platform designed to facilitate mentor-student interactions, scheduling, and session management for career and skill development. The system supports multiple user roles, real-time scheduling, session summaries, notifications, and reporting functionalities.
+
+---
+
+## 2. System Architecture & Components
+
+### 2.1 System Architecture
+
+- **Client-Server Model**: Web application with a frontend interface and backend processing.
+- **Frontend**: Responsive web interface compatible with desktops, tablets, and smartphones.
+- **Backend**: RESTful API server handling business logic, data processing, and integrations.
+- **Database**: Centralized database for storing user data, session info, schedules, summaries, and logs.
+- **Hosting & Deployment**:
+  - Development: Localhost
+  - Deployment: Heroku, PythonAnywhere, or similar cloud services
+- **Version Control**: GitHub for code collaboration and backup
+
+### 2.2 Technologies & Frameworks
+
+| Layer | Technology / Framework | Details |
+|---------|-------------------------|---------|
+| Backend | Python + Flask | Web framework for API development |
+| Frontend | HTML, CSS, Bootstrap 5 (for responsive design), JavaScript | UI development with responsiveness and interactivity |
+| Database | SQLite (initial), scalable to MySQL/PostgreSQL | Data storage for users, sessions, summaries, etc. |
+| Email | SMTP via Gmail or SendGrid | Email notifications and reminders |
+| PDF Export | ReportLab or XHTML2PDF | Generate PDF reports and summaries |
+| Version Control | Git & GitHub | Code management and collaboration |
+
+---
+
+## 3. Functional Requirements
+
+### 3.1 User Roles & Authentication
+
+- **Mentor**
+  - Register/Login
+  - Create, edit, delete available time slots
+  - View and manage booked sessions
+  - Submit session summaries
+  - Rate/review mentees post-session
+  - Export session summaries as PDF
+  - View and update profile
+- **Student**
+  - Register/Login
+  - View available mentor slots
+  - Book slots
+  - Receive email reminders
+  - Submit reviews post-session
+  - View session summaries
+  - Export summaries as PDF
+- **Admin** (Optional)
+  - Manage users
+  - Manage slots
+  - View system reports
+  - Manage notifications
+
+### 3.2 Core Features & Functionalities
+
+#### 3.2.1 Authentication & Authorization
+- Separate registration pages for mentors and students
+- Secure password hashing (e.g., bcrypt)
+- Role-based access control
+- Login/Logout functionality
+- Role-based dashboard views
+
+#### 3.2.2 Slot Management
+- Mentors can create, edit, delete time slots
+- Slots are validated and stored in the database
+- Slots are displayed in calendar or list format
+- Students can view and book available slots
+- System checks slot availability before booking
+
+#### 3.2.3 Booking & Session Management
+- Students can book a slot (one per student per time period)
+- System updates slot status upon booking
+- Mentors can view, edit, or delete booked slots
+- Post-session, mentors submit summaries
+- Students can view and mark issues as resolved
+- Session summaries include topic, discussion, status (solved/pending)
+
+#### 3.2.4 Notifications & Reminders
+- Email notifications for booking confirmations, cancellations, and reminders
+- In-app messages for booking status
+- Optional email confirmation after successful booking
+- Reminders sent before session start time
+
+#### 3.2.5 Session Summaries & Reports
+- Mentors submit summaries post-session
+- Summaries include date, time, topics discussed, issues, resolutions
+- Export summaries as PDF
+- View summaries in dashboard
+- Students can review and mark issues as resolved
+- Mentors can review and rate students
+- Export session summaries as PDF or email
+
+#### 3.2.6 Rating & Feedback
+- Students rate mentors (1-5 stars)
+- Optional text feedback
+- Average rating displayed on mentor profile
+- Feedback stored for review
+
+#### 3.2.7 Data Export & Review
+- Export session summaries as PDF
+- Review and rate mentors
+- Downloadable reports
+
+### 3.3 Additional Features
+- Email reminders before sessions
+- Automatic email notifications for booking, cancellations, and summaries
+- Dashboard views for mentors and students
+- Responsive design for mobile and tablets
+
+---
+
+## 4. Data Flow & System Processes
+
+### 4.1 Data Entities & Relationships
+
+| Entity | Attributes | Relationships |
+|---------|--------------|--------------|
+| User | user_id, name, email, password_hash, role (mentor/student/admin), profile info | One-to-many with Slots, Sessions, Summaries |
+| Slot | slot_id, mentor_id, date, start_time, end_time, status (available/booked) | Belongs to Mentor, booked by Student |
+| Booking | booking_id, slot_id, student_id, mentor_id, status | Links User and Slot |
+| Session Summary | summary_id, booking_id, mentor_id, student_id, date, topics, issues, resolutions, rating | Belongs to Booking |
+| Review | review_id, mentor_id, student_id, rating, comments | Belongs to Mentor and Student |
+
+### 4.2 Data Flow Diagram (DFD)
+
+- External entities: Mentor, Student, System
+- Data stores: Users, Slots, Bookings, Summaries, Reviews
+- Processes:
+  - Authentication
+  - Slot Management
+  - Booking Handling
+  - Session Summary Submission
+  - Notifications & Reminders
+  - Export & Reports
+
+---
+
+## 5. Non-Functional Requirements
+
+| Aspect | Specification |
+|---------|----------------|
+| Usability | Clean, intuitive, responsive UI (Bootstrap 5) |
+| Reliability | Data consistency, minimal downtime, backup via GitHub |
+| Performance | System should respond within 2 seconds under normal load |
+| Security | Password hashing, role-based access, secure data storage, input validation, protection against SQL injection and XSS |
+| Scalability | Support migration to PostgreSQL/MySQL, cloud hosting (Heroku, PythonAnywhere) |
+| Maintainability | Modular code, clear API endpoints, documentation |
+
+---
+
+## 6. Technical Implementation Details
+
+### 6.1 Programming Languages & Frameworks
+- **Backend**: Python with Flask
+- **Frontend**: HTML5, CSS3, Bootstrap 5, JavaScript
+- **Database**: SQLite (initial), scalable to MySQL/PostgreSQL
+- **Email**: SMTP via Gmail/SendGrid
+- **PDF Generation**: ReportLab or XHTML2PDF
+
+### 6.2 APIs & External Services
+- **Email API**: SMTP server (Gmail, SendGrid)
+- **Version Control**: GitHub
+- **Hosting**: Heroku, PythonAnywhere, or similar
+
+### 6.3 User Interface Requirements
+- Responsive layout
+- Calendar/list view for slots
+- Role-based dashboards
+- Forms for registration, login, slot management, summaries
+- Export buttons for PDF reports
+- Notification banners/messages
+
+### 6.4 Security & Data Validation
+- Password hashing (bcrypt)
+- Role-based access control
+- Input validation on forms
+- HTTPS for secure data transmission
+- Protection against SQL injection and XSS
+
+---
+
+## 7. Development Timeline & Constraints
+
+- **Development Duration**: 3 months
+- **Frontend**: Lightweight, fast, responsive
+- **Backend**: RESTful API with Flask
+- **Deployment**: Cloud hosting with minimal code changes
+- **Tools**: Free/open-source tools only (no premium services)
+
+---
+
+## 8. Future Enhancements (Optional)
+- Multi-language support
+- Video conferencing integration
+- Advanced analytics and reporting
+- Mobile app version
+- Multi-mentor and multi-student management
+
+---
+
+## 9. Appendix
+
+### 9.1 Sample Data Flow Diagram (Simplified)
+
+```plaintext
+Mentor <--> Slot Management <--> Booking System <--> Student
+        |                                   |
+        v                                   v
+  Session Summaries <--> PDF Export <--> Reports
+```
+
+### 9.2 Sample UI Sketches
+- Login/Register pages
+- Dashboard for mentors and students
+- Slot calendar view
+- Session summary form
+- Export PDF button
+
+---
+
+This comprehensive technical specification provides a detailed blueprint for developing the Mentilink platform, covering architecture, technologies, features, data flow, and security considerations.

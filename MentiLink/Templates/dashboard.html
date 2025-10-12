@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Mentilink{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">
+            {% if current_user.role == 'mentor' %}
+                <i class="fas fa-chalkboard-teacher me-2"></i>Mentor Dashboard
+            {% else %}
+                <i class="fas fa-user-graduate me-2"></i>Student Dashboard
+            {% endif %}
+        </h2>
+    </div>
+</div>
+
+{% if current_user.role == 'mentor' %}
+    <!-- Mentor Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.total_slots }}</h4>
+                            <p class="mb-0">Total Slots</p>
+                        </div>
+                        <i class="fas fa-calendar fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.booked_sessions }}</h4>
+                            <p class="mb-0">Booked Sessions</p>
+                        </div>
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.completed_sessions }}</h4>
+                            <p class="mb-0">Completed</p>
+                        </div>
+                        <i class="fas fa-graduation-cap fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.available_slots }}</h4>
+                            <p class="mb-0">Available</p>
+                        </div>
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-calendar-plus me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{{ url_for('dashboard.create_slot') }}" class="btn btn-primary btn-block mb-2">
+                        <i class="fas fa-plus me-2"></i>Create New Slot
+                    </a>
+                    <a href="{{ url_for('sessions.my_sessions') }}" class="btn btn-outline-primary btn-block">
+                        <i class="fas fa-list me-2"></i>View All Sessions
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock me-2"></i>Upcoming Sessions</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_sessions %}
+                        {% for session in upcoming_sessions %}
+                            <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+                                <div>
+                                    <strong>{{ session.student.full_name }}</strong><br>
+                                    <small class="text-muted">{{ session.slot.start_time.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <a href="{{ url_for('sessions.view_session', session_id=session.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No upcoming sessions</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% else %}
+    <!-- Student Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.total_sessions }}</h4>
+                            <p class="mb-0">Total Sessions</p>
+                        </div>
+                        <i class="fas fa-calendar fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.completed_sessions }}</h4>
+                            <p class="mb-0">Completed</p>
+                        </div>
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ stats.upcoming_sessions }}</h4>
+                            <p class="mb-0">Upcoming</p>
+                        </div>
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-users me-2"></i>Available Mentors</h5>
+                </div>
+                <div class="card-body">
+                    {% if available_slots %}
+                        <div class="row">
+                            {% for slot in available_slots %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border">
+                                        <div class="card-body">
+                                            <h6 class="card-title">{{ slot.mentor.full_name }}</h6>
+                                            <p class="card-text">
+                                                <small class="text-muted">{{ slot.start_time.strftime('%Y-%m-%d %H:%M') }}</small><br>
+                                                Duration: {{ slot.duration }} minutes
+                                            </p>
+                                            <a href="{{ url_for('dashboard.book_session', slot_id=slot.id) }}" class="btn btn-sm btn-primary">Book Session</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">No available slots at the moment</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-clock me-2"></i>Upcoming Sessions</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming_sessions %}
+                        {% for session in upcoming_sessions %}
+                            <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+                                <div>
+                                    <strong>{{ session.mentor.full_name }}</strong><br>
+                                    <small class="text-muted">{{ session.slot.start_time.strftime('%Y-%m-%d %H:%M') }}</small>
+                                </div>
+                                <a href="{{ url_for('sessions.view_session', session_id=session.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No upcoming sessions</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
