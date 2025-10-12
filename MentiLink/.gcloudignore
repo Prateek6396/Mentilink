@@ -1,7 +1,0 @@
-# .gcloudignore
-venv/
-__pycache__/
-*.pyc
-
-# Ignore the local SQLite database file, as it won't be used in production
-mentilink.db
